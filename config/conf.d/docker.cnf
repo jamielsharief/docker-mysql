@@ -1,0 +1,9 @@
+[mysqld]
+disable-log-bin
+skip-host-cache
+skip-name-resolve
+default-authentication-plugin=mysql_native_password
+
+
+# Not working
+user=mysql

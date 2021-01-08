@@ -14,9 +14,9 @@ cat <<EOF
 
 EOF
 
-initialize() {
+DATADIR='/var/lib/mysql';
 
-  DATADIR='/var/lib/mysql';
+initialize() {
 
   if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
       MYSQL_ROOT_PASSWORD="root"

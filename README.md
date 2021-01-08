@@ -6,6 +6,22 @@ development and should not be used in production, the root user is also granted 
 Another key difference is, that `mysql_native_password authentication plugin` is configured to work out the
 box.
 
+### Docker Compose Service
+
+To add as a service to your `docker-compose.yml`
+
+```yaml
+services:
+  db:
+    image: jamielsharief/mysql:0.1.0
+    volumes:
+      - mysql-data:/var/lib/mysql
+```
+
+### Container
+
+To work with a normal container, remember you need to setup volumes so data is persisted.
+
 ```
 $ docker build -t mysql .
 ```

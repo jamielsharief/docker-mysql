@@ -18,8 +18,8 @@ jobs:
           docker push jamielsharief/mysql:arm64
       - name: Create & Upload Manifest
         run: |
-        docker manifest create \
+          docker manifest create \
           jamielsharief/mysql:latest \
           --amend jamielsharief/mysql:amd64 \
           --amend jamielsharief/mysql:arm64
-        docker manifest push jamielsharief/mysql:latest
+          docker manifest push jamielsharief/mysql:latest

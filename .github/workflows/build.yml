@@ -19,6 +19,8 @@ jobs:
           docker build -t jamielsharief/mysql:arm64 --build-arg ARCH=arm64v8/ .
           docker push jamielsharief/mysql:arm64
       - name: Create & Upload Manifest
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
         run: |
           docker manifest create \
           jamielsharief/mysql:latest \

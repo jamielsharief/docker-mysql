@@ -1,9 +1,8 @@
 # Docker MySQL 8.0 Image (beta)
 
-The official repo image does not work on M1 (ARM 64) chips, so I decided to build my own. This is for
-development and should not be used in production, the root user is also granted access on '@%'.
+The official mysql repo image only supports AMD64 processors, so I decided to build my own image which can work on AMD64,ARM64 and ARM32.
 
-Another key difference is, that `mysql_native_password authentication plugin` is configured to work out the
+This image is for software developers and should not be used in production, the root user is also granted access on '@%' and `mysql_native_password authentication plugin` is configured to work out the
 box.
 
 ### Docker Compose Service
@@ -13,7 +12,7 @@ To add as a service to your `docker-compose.yml`
 ```yaml
 services:
   db:
-    image: jamielsharief/mysql:0.1.0
+    image: jamielsharief/mysql:latest
     volumes:
       - mysql-data:/var/lib/mysql
 ```
@@ -60,3 +59,4 @@ Here is a full example
 ```
 $ docker run -it -p 3306:3306 -e MYSQL_ROOT_PASSWORD=foo -e MYSQL_USER=roger -e MYSQL_PASSWORD=beck -e MYSQL_DATABASE=application mysql
 ```
+

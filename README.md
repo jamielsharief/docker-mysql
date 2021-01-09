@@ -31,33 +31,30 @@ services:
 
 To work with a normal container, remember you need to setup volumes so data is persisted.
 
-```
-$ docker build -t mysql .
-```
 
 To start a MySQL container with the username `root` and password `root`
 
 ```
-$ docker run -it -d -p 3306:3306 mysql
+$ docker run -it -d -p 3306:3306 jamielsharief/mysql:latest 
 ```
 
 
 To change the root password
 
 ```
-$ docker run -it -p 3306:3306 -e MYSQL_ROOT_PASSWORD=foo mysql
+$ docker run -it -p 3306:3306 -e MYSQL_ROOT_PASSWORD=foo jamielsharief/mysql:latest 
 ```
 
 To create a database
 
 ```
-$ docker run -it -p 3306:3306 -e MYSQL_DATABASE=application mysql
+$ docker run -it -p 3306:3306 -e MYSQL_DATABASE=application jamielsharief/mysql:latest 
 ```
 
 To create a user you must supply both a username and password
 
 ```
-$ docker run -it -p 3306:3306 -e MYSQL_USER=jon -e MYSQL_PASSWORD=secret mysql
+$ docker run -it -p 3306:3306 -e MYSQL_USER=jon -e MYSQL_PASSWORD=secret jamielsharief/mysql:latest 
 ```
 
 If you are creating a user and a database, full permissions will be granted for that
@@ -67,7 +64,7 @@ user on that database.
 Here is a full example
 
 ```
-$ docker run -it -p 3306:3306 -e MYSQL_ROOT_PASSWORD=foo -e MYSQL_USER=roger -e MYSQL_PASSWORD=beck -e MYSQL_DATABASE=application mysql
+$ docker run -it -p 3306:3306 -e MYSQL_ROOT_PASSWORD=foo -e MYSQL_USER=roger -e MYSQL_PASSWORD=beck -e MYSQL_DATABASE=application jamielsharief/mysql:latest 
 ```
 
 ## Resources

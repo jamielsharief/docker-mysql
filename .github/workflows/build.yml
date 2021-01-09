@@ -10,20 +10,31 @@ jobs:
         uses: actions/checkout@v2
       - name: Login Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      - name: Build AMD64 Image
+#      - name: Build AMD64 Image
+#        run: |
+#          docker build -t jamielsharief/mysql:amd64 --build-arg ARCH=amd64/ .
+#          docker push jamielsharief/mysql:amd64
+#      - name: Build ARM64 Image
+#        run: |
+#          docker build -t jamielsharief/mysql:arm64 --build-arg ARCH=arm64v8/ .
+#          docker push jamielsharief/mysql:arm64
+#      - name: Create & Upload Manifest
+#        env:
+#          DOCKER_CLI_EXPERIMENTAL: enabled
+#        run: |
+#          docker manifest create \
+#          jamielsharief/mysql:latest \
+#          --amend jamielsharief/mysql:amd64 \
+#          --amend jamielsharief/mysql:arm64
+#          docker manifest push jamielsharief/mysql:latest
+#         End of manifesto method
+      - name: Install buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      - name: Build Images
         run: |
-          docker build -t jamielsharief/mysql:amd64 --build-arg ARCH=linux/amd64 .
-          docker push jamielsharief/mysql:amd64
-      - name: Build ARM64 Image
-        run: |
-          docker build -t jamielsharief/mysql:arm64 --build-arg ARCH=linux/arm64 .
-          docker push jamielsharief/mysql:arm64
-      - name: Create & Upload Manifest
-        env:
-          DOCKER_CLI_EXPERIMENTAL: enabled
-        run: |
-          docker manifest create \
-          jamielsharief/mysql:latest \
-          --amend jamielsharief/mysql:amd64 \
-          --amend jamielsharief/mysql:arm64
-          docker manifest push jamielsharief/mysql:latest
+          docker buildx build \
+            --platform linux/arm64,linux/amd64 .           
+            --tag jamielsharief/mysql:latest \

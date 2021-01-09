@@ -35,6 +35,4 @@ jobs:
           version: latest
       - name: Build Images
         run: |
-          docker buildx build \
-            --platform linux/arm64,linux/amd64 .           
-            --tag jamielsharief/mysql:latest \
+          docker buildx build --platform linux/arm64,linux/amd64 --tag jamielsharief/mysql:latest .

@@ -33,6 +33,7 @@ jobs:
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           version: latest
+#     linux/arm/v7 error: failed to solve: rpc error: code = Unknown desc = executor failed running
       - name: Build Images
         run: |
-          docker buildx build --platform linux/arm64,linux/amd64,linux/arm/v7 --tag jamielsharief/mysql:latest --push .
+          docker buildx build --platform linux/arm64,linux/amd64 --tag jamielsharief/mysql:latest --push .

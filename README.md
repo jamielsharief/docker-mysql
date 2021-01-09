@@ -1,6 +1,6 @@
 # Docker MySQL 8.0 Image (beta)
 
-The official mysql repo image only supports AMD64 processors, so I decided to build my own image which can work on AMD64,ARM64 and ARM32.
+The official mysql repo image only supports AMD64 processors, so I decided to build my own image which can work on AMD64 & ARM64.
 
 This image is for software developers and should not be used in production, the root user is also granted access on '@%' and `mysql_native_password authentication plugin` is configured to work out the
 box.

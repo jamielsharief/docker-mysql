@@ -1,30 +1,17 @@
 #!/bin/bash
 # 
-# Docker MySQL Image that works on M1 chips
+# Multi architecture MySQL docker image
 # Copyright 2021 Jamiel Sharief
 #
-cat <<EOF
-
-    __  ___      _____ ____    __ 
-   /  |/  /_  __/ ___// __ \  / / 
-  / /|_/ / / / /\__ \/ / / / / /  
- / /  / / /_/ /___/ / /_/ / / /___
-/_/  /_/\__, //____/\___\_\/_____/
-       /____/                     
-
-EOF
 
 DATADIR='/var/lib/mysql';
 
 initialize() {
 
-  if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
-      MYSQL_ROOT_PASSWORD="root"
-  fi
+  MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:-root}"
+  MYSQL_ROOT_HOST="${MYSQL_ROOT_HOST:-%}"
 
-  echo "Initializing MySQL"
-  echo "=================="
-  echo  
+  echo "> Initializing database"
   mkdir -p /var/lib/mysql
   chown -R mysql:mysql /var/lib/mysql
 
@@ -40,12 +27,18 @@ initialize() {
   echo "> Setting root password";
   echo
   echo "Password: $MYSQL_ROOT_PASSWORD"
+
+  if [ "$MYSQL_ROOT_HOST" != 'localhost' ]; then
+    mysql <<EOF 
+    CREATE USER 'root'@'${MYSQL_ROOT_HOST}' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+    GRANT ALL ON *.* TO 'root'@'${MYSQL_ROOT_HOST}' WITH GRANT OPTION;"
+EOF
+  fi
+
   mysql <<EOF
   ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
   GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
-  CREATE USER 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
-	GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;
-  FLUSH PRIVILEGES ;
+  FLUSH PRIVILEGES;
 EOF
 
   # work similar to official mysql docker image
@@ -78,9 +71,26 @@ EOF
   echo "> Complete";
 }
 
+# Initialize if needed
 if [ "$1" = 'mysqld' ]; then
   if [ ! -d "$DATADIR/mysql" ]; then
     initialize;
   fi
 fi
-exec "$@"
+
+cat <<EOF
+
+    __  ___      _____ ____    __ 
+   /  |/  /_  __/ ___// __ \  / / 
+  / /|_/ / / / /\__ \/ / / / / /  
+ / /  / / /_/ /___/ / /_/ / / /___
+/_/  /_/\__, //____/\___\_\/_____/
+       /____/                     
+
+EOF
+if [ "$1" = 'mysqld' ]; then
+  exec "$@" "--user=mysql"
+else
+  exec "$@"
+fi
+

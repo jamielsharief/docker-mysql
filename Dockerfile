@@ -1,3 +1,7 @@
+# 
+# Multi architecture MySQL docker image
+# Copyright 2021 Jamiel Sharief
+#
 FROM ubuntu:20.04
 
 ENV DATE_TIMEZONE UTC
@@ -21,8 +25,8 @@ RUN apt-get update && apt-get install -y \
 VOLUME /var/lib/mysql
 
 COPY config/ /etc/mysql/
-
 COPY docker-entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-EXPOSE 3306
-CMD ["mysqld","--user=mysql"]
+
+EXPOSE 3306 33060
+CMD ["mysqld"]
